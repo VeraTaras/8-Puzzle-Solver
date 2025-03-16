@@ -1,0 +1,116 @@
+﻿<Window x:Class="Puzzle8.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Puzzle8.ViewModel"
+        Title="8 Puzzle Solver" Height="600" Width="800">
+    <Window.Resources>
+        <vm:PuzzleViewModel x:Key="MainViewModel"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <StaticResource ResourceKey="MainViewModel"/>
+    </Window.DataContext>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Поле для ввода порядка чисел в виде 3x3 матрицы -->
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="3" HorizontalAlignment="Center">
+            <TextBlock Text="Enter the order of numbers from 0 to 8 (no repetitions):" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Ячейки для ввода чисел с привязкой к свойствам ViewModel -->
+                <TextBox Grid.Row="0" Grid.Column="0" Text="{Binding Cell0, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Cell1, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding Cell2, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Cell3, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Cell4, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Cell5, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding Cell6, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Cell7, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Cell8, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="5"/>
+            </Grid>
+            <Button Content="Apply Sequence" Command="{Binding ApplySequenceCommand}" Width="150" Margin="10"/>
+        </StackPanel>
+
+        <!-- Поле и кнопка для алгоритма BFS -->
+        <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+            <TextBlock Text="BFS Result:" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="{Binding BFSSteps}" FontWeight="Normal" Margin="0,0,0,10" />
+            <ItemsControl ItemsSource="{Binding BFSBoard}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="3" Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1" Width="50" Height="50" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.TileColors[?]}">
+                            <TextBlock Text="{Binding}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="Solve with BFS" Command="{Binding SolveBFSCommand}" Width="100" Margin="10"/>
+        </StackPanel>
+
+        <!-- Поле и кнопка для алгоритма DFS -->
+        <StackPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+            <TextBlock Text="DFS Result:" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="{Binding DFSSteps}" FontWeight="Normal" Margin="0,0,0,10"/>
+            <ItemsControl ItemsSource="{Binding DFSBoard}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="3" Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1" Width="50" Height="50" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.TileColors[?]}">
+                            <TextBlock Text="{Binding}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="Solve with DFS" Command="{Binding SolveDFSCommand}" Width="100" Margin="10"/>
+        </StackPanel>
+
+        <!-- Поле и кнопка для третьего алгоритма -->
+        <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center">
+            <TextBlock Text="A* Algorithm Result:" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="{Binding HeuristicSteps}" FontWeight="Normal" Margin="0,0,0,10" />
+            <ItemsControl ItemsSource="{Binding HeuristicBoard}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="3" Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Black" BorderThickness="1" Width="50" Height="50" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.TileColors[?]}">
+                            <TextBlock Text="{Binding}" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button Content="Solve with A*" Command="{Binding SolveHeuristicCommand}" Width="100" Margin="10"/>
+        </StackPanel>
+    </Grid>
+</Window>
