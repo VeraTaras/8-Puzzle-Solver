@@ -25,13 +25,12 @@ git clone https://github.com/VeraTaras/8-Puzzle-Solver.git
 1. **Enter Initial State:** Input the numbers 0-8 in a valid configuration.
 2. **Apply Sequence:** Click the "Apply" button to validate and set the board.
 3. **Solve the Puzzle:** Choose an algorithm (BFS, DFS, Heuristic) and run the solver.
-
 4. **View Results:** The solved state and the number of steps taken will be displayed.
 
 
-## Screenshots
+## Screenshot
 <table>
   <tr>
-    <td><img src="" alt="Screenshot" width="400"/></td>
+    <td><img src="https://github.com/VeraTaras/8-Puzzle-Solver/blob/main/8Puzzle.jpg" alt="Screenshot" width="400"/></td>
   </tr>
 </table>
